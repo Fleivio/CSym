@@ -1,0 +1,5 @@
+Def_Type "B" (Ty_Prod (Ty_Var "1") (Ty_Var "1"))
+Def_Term "q1" (Ty_Var "B") (T_Inl T_Unit)
+Def_Term "q0" (Ty_Var "B") (T_Inr T_Unit)
+Def_Iso "id" (IT_Iso (Ty_Var "a") (Ty_Var "a")) (I_Lam "a" (I_Name "a"))
+Def_Iso "not" (IT_Iso (Ty_Var "B") (Ty_Var "B")) (I_Set [(V_Var "q0",E_Value (V_Var "q1")),(V_Var "q1",E_Value (V_Var "q0"))])

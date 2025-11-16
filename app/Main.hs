@@ -1,4 +1,14 @@
 module Main where
 
+import Lexer
+import Parser
+
 main :: IO ()
-main = putStrLn "Hello, Haskell!"
+main = do 
+    entry <- readFile "test.csym"
+    let tokens = alexScanTokens entry
+    -- print tokens
+    let ast = unlines $ show <$> parseTokens tokens
+
+    putStrLn ast
+    writeFile "test.ast" ast

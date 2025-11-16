@@ -1,0 +1,10 @@
+typedef B = 1 * 1;
+
+def q1 : B = inl ();
+def q0 : B = inr ();
+
+def id : a <-> a = lam a ~> a;
+
+def not : B <-> B
+    | q0 <-> q1
+    | q1 <-> q0;

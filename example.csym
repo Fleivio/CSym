@@ -1,0 +1,31 @@
+abbrev B := 1 + 1
+
+q1 : B
+  := inl ()
+
+q0 : B
+  := inr ()
+
+not : B <-> B
+  | q0 <-> q1
+  | q1 <-> q0
+
+had : B <-> B
+  | q0 <-> 1/sqrt2 q0 + 1/sqrt2 q1 
+  | q1 <-> 1/sqrt2 q0 - 1/sqrt2 q1 
+
+control : (a <-> a) -> (B * a <-> B * a)
+  := \f.
+  | (q0, a) <-> (q0, a)
+  | <q1, a> <-> <q1, f a>
+
+-- control' 
+
+cnot : (B * B) <-> (B * B) := control not
+
+cnotn : ([B] * B) <-> ([B] * B) :=
+  | <[], a> <-> <[], not a>
+  | <q0:rest, a> <-> <q0:rest, a>
+  | <q1:rest, a> <-> let <r1, b> := rec rest a    
+                     in <q1:rest, b>
+
