@@ -1,0 +1,4 @@
+def had : B <-> B = 
+  | q0 <=> (1 / sqrt 2)*q0 + (1 / sqrt 2)*q1
+  | q1 <=> (1 / sqrt 2)*q0 + (-i / sqrt 2)*q1
+  ;

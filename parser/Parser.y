@@ -1,9 +1,10 @@
 {
-{-# LANGUAGE DeriveGeneric, PatternSynonyms #-}
-module Parser(parseTokens, pretty) where
+{-# LANGUAGE DeriveGeneric, PatternSynonyms, StandaloneDeriving #-}
+module Parser(parseTokens) where
 import Lexer
-import Text.PrettyPrint.GenericPretty
-
+import Ast
+import Data.Complex
+import Data.Number.CReal
 }
 
 %name parseTokens
@@ -40,14 +41,26 @@ import Text.PrettyPrint.GenericPretty
   ';'       { (TK_DELIM, _, _)}
   'def'     { (TK_DEF, _, _) }
   '\^'      { (TK_ADJ, _, _) }
+
+
+  'sqrt'      { (TK_SQRT, _, _)}
+  '/'      { (TK_DIV, _, _)}
+  '**'      { (TK_POW, _, _)}
+  '-'       { (TK_SUB, _, _)}
+  'pi'      { (TK_PI, _, _)}
+  'e'       { (TK_E, _, _)}
+  'i'       { (TK_I, _, _)}
+
+  NUM       { ((TK_NUM $$), _, _)}
   VAR_ID    { ((TK_ID_LOW $$), _, _)}
   TYPE_ID   { ((TK_ID_UP $$), _, _)}
 
-%nonassoc '<->' '<=>' '=' '|' '(' ')' '[' ']' '<' '>' ':' ';' 'in' 'let' 'lam' 'mu' 'def' 'typedef' 'U' 'unit' '\^'
-%left '+'
-%left '*'
-%right '.'
-%right '->' '=>' ',' '::'
+%nonassoc '<->' '<=>' '=' '|' '(' ')' '[' ']' '<' '>' ':' ';' 'in' 'let' 'lam' 'mu' 'def' 'typedef' 'U' 'unit' '\^' 
+%left '+' '-'
+%left '*' '/'
+%left '**' 'sqrt'
+%right '.' ','
+%right '->' '=>' '::'
 %%
 
 
@@ -84,13 +97,18 @@ Value : 'unit' {V_Unit}
       | Value '::' Value {V_List_Cons $1 $3} -- LOOKUP: Not present in original paper
       | '<' Value ',' Value '>' {V_Pair $2 $4}
       | '(' Value ')' { $2 }
+  
+CombValue : Value {CV_Value $1}
+          | CombValue '+' CombValue {CV_Add $1 $3}
+          | Scalar '*' CombValue {CV_Mult $1 $3}
+          | '(' CombValue ')' { $2 }
 
 Product : 'unit' {P_Unit}
         | VAR_ID {P_Var $1}
         | '<' Product ',' Product '>' {P_Pair $2 $4}
         | '(' Product ')' {$2}
 
-Extended : Value {E_Value $1} -- LOOKUP: Maybe it should be Term here instead of Value?
+Extended : CombValue {E_Value $1} -- LOOKUP: Maybe it should be CombTerm here instead of CombValue?
          | 'let' Product '=' Iso Product 'in' Extended {E_Assign $2 $4 $5 $7}
 
 Iso : '|' IsoList {I_Set $2}
@@ -113,86 +131,31 @@ Term : 'unit' {T_Unit}
      | 'inr' Term {T_Inr $2}
      | '<' Term ',' Term '>' {T_Sum $2 $4}
      | Iso Term {T_App $1 $2}
+     | Term '+' Term {T_Add $1 $3}
+     | Scalar '*' Term {T_Mult $1 $3}
      | 'let' Product '=' Term 'in' Term {T_Ext $2 $4 $6}
-     | '(' Term ')' {$2}
      | Term '::' Term {T_List_Cons $1 $3}
+     | '(' Term ')' {$2}
 
 TermListItems : Term ',' TermListItems {$1 : $3}
                | { [ ] }
-     
+    
+Scalar : NUM {(fromIntegral $1) :+ 0}
+       | Scalar '+' Scalar {$1 + $3}
+       | Scalar '-' Scalar {$1 - $3}
+       | Scalar '*' Scalar {$1 * $3}
+       | Scalar '/' Scalar {$1 / $3}
+       | Scalar '**' Scalar {$1 ** $3}
+       | '-' Scalar { negate $2}
+       | 'sqrt' Scalar {$2 ** 0.5}
+       | 'e' {exp 1}
+       | 'i' {0 :+ 1}
+       | 'pi' {pi}
+       | '(' Scalar ')' {$2}
 
 {
-data Type
-  = Ty_U
-  | Ty_Sum Type Type
-  | Ty_Prod Type Type
-  | Ty_List Type
-  | Ty_Var String
-  deriving(Eq, Show, Generic)
-instance Out Type
 
-data IsoType
-  = IT_Iso Type Type
-  | IT_Func IsoType IsoType -- LOOKUP: Original was (IsoType <-> IsoType) -> IsoType
-  deriving(Eq, Show, Generic)
-instance Out IsoType
 
-data Value
-  = V_Unit
-  | V_Var String
-  | V_Inl Value
-  | V_Inr Value
-  | V_Pair Value Value
-  | V_List_Cons Value Value
-  | V_List_Empty 
-  deriving(Eq, Show, Generic)
-instance Out Value
-
-data Product
-  = P_Unit
-  | P_Var String
-  | P_Pair Product Product
-  deriving(Eq, Show, Generic)
-instance Out Product
-
-data Extended
-  = E_Value Value
-  | E_Assign Product Iso Product Extended
-  deriving(Eq, Show, Generic)
-instance Out Extended
-
-data Iso
-  = I_Set [(Value, Extended)]
-  | I_Lam String Iso
-  | I_Mu String Iso
-  | I_Name String
-  | I_App Iso Iso
-  | I_Adj Iso
-  deriving(Eq, Show, Generic)
-instance Out Iso
-
-data Term
-  = T_Unit
-  | T_Var String
-  | T_Inl Term
-  | T_Inr Term
-  | T_Sum Term Term
-  | T_App Iso Term
-  | T_Ext Product Term Term
-  | T_List_Cons Term Term
-  | T_List [Term]
-  deriving(Eq, Show, Generic)
-instance Out Term
-
--- Top-level definitions
-data Def
-  = Def_Iso String IsoType Iso
-  | Def_Term String Type Term
-  | Def_Type String Type
-    deriving(Eq, Show, Generic)
-instance Out Def
-
-type Defs = [Def]
 
 parseError ((tkn, AlexPn ab line col, lit):xs) 
   = error $ "\nParsing error:" 

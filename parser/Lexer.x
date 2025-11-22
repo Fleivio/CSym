@@ -3,6 +3,7 @@ module Lexer where
 }
 %wrapper "posn"
 $char = [a-zA-Z0-9\']
+$digit = [0-9]
 $backslash = [\\]
 $adj = [\^]
 
@@ -46,9 +47,19 @@ tokens :-
   "<->"                  { tokenMk TK_RL_ARROW }
   "<=>"                  { tokenMk TK_RL_FAT_ARROW }
   "|"                    { tokenMk TK_BAR }
+  
+  "/"                    { tokenMk TK_DIV}
+  "sqrt"                   { tokenMk TK_SQRT}
+  "**"                   { tokenMk TK_POW}
+  "-"                    { tokenMk TK_SUB}
+  "pi"                   { tokenMk TK_PI}
+  "e"                    { tokenMk TK_E}
+  "i"                    { tokenMk TK_I}
+--TODO: trig functions
 
   [a-z]$char*            { \i c -> tokenMk (TK_ID_LOW c) i c }
   [A-Z]$char*            { \i c -> tokenMk (TK_ID_UP c) i c }
+  $digit+                { \i c -> tokenMk (TK_NUM (read c)) i c }
   ";"                    { tokenMk TK_DELIM }
   "\n"                   ;
 
@@ -78,7 +89,15 @@ data TokenId
   | TK_BAR
   | TK_ID_LOW String
   | TK_ID_UP String
+  | TK_NUM Int
   | TK_DELIM
+  | TK_DIV
+  | TK_SQRT
+  | TK_POW
+  | TK_SUB
+  | TK_PI
+  | TK_I
+  | TK_E
   deriving (Show, Eq)
 
 type Token = (TokenId, AlexPosn, String)

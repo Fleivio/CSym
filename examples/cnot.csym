@@ -8,14 +8,6 @@ def not : B <-> B =
   | q1 <=> q0
   ;
 
-def cnot : (B * B) <-> (B * B) = lam a => a;
-
-def controlled : (B <-> B) -> (B * B <-> B * B) =
-  \f =>
-  | <q0, a> <=> <q0, a>
-  | <q1, a> <=> let m = f a in <q1, m>
-  ;
-
 def cnotn : ([B] * B) <-> ([B] * B) =
   rec f => 
   | <[], tb>        <=> let tb' = not tb 
@@ -31,5 +23,3 @@ def controlledn : (B <-> B) -> ([B] * B <-> [B] * [B]) =
   | <q0 :: q0 :: cbs, tb> <=> <q0 :: cbs, tb>
   | <q1 :: cbs, tb> <=> let <cbs', tb'> = f <cbs, tb> in <q1 :: cbs', tb'>
   ;
-
-

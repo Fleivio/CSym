@@ -27,6 +27,7 @@ library parser
         base ^>=4.18.0.0
         , array
         , GenericPretty
+        , numbers
     
     build-tool-depends: happy:happy, alex:alex
 
@@ -35,6 +36,8 @@ library parser
     exposed-modules:
         Parser
         Lexer
+        Ast
+        Printer
 
     default-language: Haskell2010
 
