@@ -3,7 +3,15 @@ import System.Environment
 
 import Lexer
 import Parser
-import Printer
+import Printer  
+
+parseInput :: String -> IO ()
+parseInput input = do 
+    let tokens       = alexScanTokens input 
+        ast          = parseTokens tokens
+        outputString = unlines $ pshow <$> ast
+    putStrLn outputString
+    writeFile "ast.ast" outputString
 
 main :: IO ()
 main = do
@@ -11,9 +19,5 @@ main = do
     case args of 
       [file] -> do
         entry <- readFile file
-        let tokens = alexScanTokens entry
-        let ast = unlines $ innerStr. (pretty 0) <$> parseTokens tokens
-
-        putStrLn ast
-        writeFile "test.ast" ast
-      _ -> putStrLn "Wrong number of arguments"
+        parseInput entry
+      _ -> putStrLn "Wrong number of arguments \nUse \"cabal run . -- filename\" to parse a file"

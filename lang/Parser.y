@@ -43,8 +43,8 @@ import Data.Number.CReal
   '\^'      { (TK_ADJ, _, _) }
 
 
-  'sqrt'      { (TK_SQRT, _, _)}
-  '/'      { (TK_DIV, _, _)}
+  'sqrt'    { (TK_SQRT, _, _)}
+  '/'       { (TK_DIV, _, _)}
   '**'      { (TK_POW, _, _)}
   '-'       { (TK_SUB, _, _)}
   'pi'      { (TK_PI, _, _)}

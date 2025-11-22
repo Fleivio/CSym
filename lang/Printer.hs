@@ -1,6 +1,5 @@
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE UndecidableInstances #-}
-module Printer(pretty, innerStr) where
+{-# LANGUAGE FlexibleInstances, UndecidableInstances #-}
+module Printer(pretty, innerStr, pshow) where
 
 import Data.Complex
 import Data.Number.CReal
@@ -12,7 +11,7 @@ tabSize k = space ++ end
   where space = take (k*4) $ cycle ['│', ' ', ' ', ' ']
         end = "└── "
 
-data PString = PString {innerStr :: String} deriving (Eq, Show)
+newtype PString = PString {innerStr :: String} deriving (Eq, Show)
 
 instance Semigroup PString where
   PString a <> PString b = PString $ a ++ "\n" ++ b
@@ -22,6 +21,9 @@ instance Monoid PString where
 
 class Pretty a where
   pretty :: Int -> a -> PString
+
+pshow :: Pretty a => a -> String
+pshow = innerStr . pretty 0 
 
 instance {-# OVERLAPPABLE #-} Show a => Pretty a where
   pretty sp val = PString (tabSize sp ++ show val)

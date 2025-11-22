@@ -49,7 +49,7 @@ tokens :-
   "|"                    { tokenMk TK_BAR }
   
   "/"                    { tokenMk TK_DIV}
-  "sqrt"                   { tokenMk TK_SQRT}
+  "sqrt" | "~/"          { tokenMk TK_SQRT}
   "**"                   { tokenMk TK_POW}
   "-"                    { tokenMk TK_SUB}
   "pi"                   { tokenMk TK_PI}
