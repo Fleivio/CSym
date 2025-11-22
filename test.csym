@@ -1,10 +1,35 @@
-typedef B = 1 * 1;
+def B = U * U;
 
-def q1 : B = inl ();
-def q0 : B = inr ();
+def q1 : B = inl unit;
+def q0 : B = inr unit;
 
-def id : a <-> a = lam a ~> a;
+def not : B <-> B =
+  | q0 <=> q1
+  | q1 <=> q0
+  ;
 
-def not : B <-> B
-    | q0 <-> q1
-    | q1 <-> q0;
+def cnot : (B * B) <-> (B * B) = lam a => a;
+
+def controlled : (B <-> B) -> (B * B <-> B * B) =
+  \f =>
+  | <q0, a> <=> <q0, a>
+  | <q1, a> <=> let m = f a in <q1, m>
+  ;
+
+def cnotn : ([B] * B) <-> ([B] * B) =
+  rec f => 
+  | <[], tb>        <=> let tb' = not tb 
+                        in <[], tb'>
+  | <q0 :: cbs, tb> <=> <q0 :: cbs, tb>
+  | <q1 :: cbs, tb> <=> let <cbs', tb'> = f <cbs, tb> 
+                        in <q1 :: cbs', tb'>
+  ;
+
+def controlledn : (B <-> B) -> ([B] * B <-> [B] * [B]) = 
+  rec f => \op =>
+  | <[], tb>        <=> let tb' = op tb in <[], tb'>
+  | <q0 :: q0 :: cbs, tb> <=> <q0 :: cbs, tb>
+  | <q1 :: cbs, tb> <=> let <cbs', tb'> = f <cbs, tb> in <q1 :: cbs', tb'>
+  ;
+
+

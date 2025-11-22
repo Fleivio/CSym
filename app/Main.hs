@@ -7,8 +7,7 @@ main :: IO ()
 main = do 
     entry <- readFile "test.csym"
     let tokens = alexScanTokens entry
-    -- print tokens
-    let ast = unlines $ show <$> parseTokens tokens
+    let ast = unlines $ pretty <$> parseTokens tokens
 
     putStrLn ast
     writeFile "test.ast" ast
