@@ -8,7 +8,9 @@ import Data.Number.CReal
 import Ast
 
 tabSize :: Int -> String
-tabSize k = take (k*2) $ cycle ['|', ' ']
+tabSize k = space ++ end
+  where space = take (k*4) $ cycle ['│', ' ', ' ', ' ']
+        end = "└── "
 
 data PString = PString {innerStr :: String} deriving (Eq, Show)
 
@@ -95,8 +97,8 @@ instance Pretty Extended where
 
 instance Pretty Iso where
   pretty sp (I_Set lst) = PString (tabSize sp ++ "I_Set:") 
-                           <> mconcat [ pretty (succ sp) v 
-                                        <> pretty (succ sp) ext 
+                           <> let sp' = succ sp in
+                              mconcat [ PString (tabSize sp' ++ "Iso_Rule:") <> pretty (succ sp') v  <> pretty (succ sp') ext 
                                       | (v, ext) <- lst ]
   pretty sp (I_Lam name iso) = PString (tabSize sp ++ "I_Lam: " ++ name) 
                                  <> pretty (succ sp) iso
