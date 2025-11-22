@@ -1,16 +1,4 @@
-└── Def_Type: B
-│   └── Ty_Prod:
-│   │   └── Ty_Unit
-│   │   └── Ty_Unit
-└── Def_Term: q1
-│   └── Ty_Var: B
-│   └── T_Inl:
-│   │   └── T_Unit
-└── Def_Term: q0
-│   └── Ty_Var: B
-│   └── T_Inr:
-│   │   └── T_Unit
-└── Def_Iso: not
+└── Def_Iso: had
 │   └── IT_Iso:
 │   │   └── Ty_Var: B
 │   │   └── Ty_Var: B
@@ -18,139 +6,33 @@
 │   │   └── Iso_Rule:
 │   │   │   └── V_Var: q0
 │   │   │   └── E_Value:
-│   │   │   │   └── CV_Value:
-│   │   │   │   │   └── V_Var: q1
+│   │   │   │   └── CV_Add:
+│   │   │   │   │   └── CV_Mult:
+│   │   │   │   │   │   └── Complex:
+│   │   │   │   │   │   │   └── 0.7071
+│   │   │   │   │   │   │   └── 0.0*i
+│   │   │   │   │   │   └── CV_Value:
+│   │   │   │   │   │   │   └── V_Var: q0
+│   │   │   │   │   └── CV_Mult:
+│   │   │   │   │   │   └── Complex:
+│   │   │   │   │   │   │   └── 0.7071
+│   │   │   │   │   │   │   └── 0.0*i
+│   │   │   │   │   │   └── CV_Value:
+│   │   │   │   │   │   │   └── V_Var: q1
 │   │   └── Iso_Rule:
 │   │   │   └── V_Var: q1
 │   │   │   └── E_Value:
-│   │   │   │   └── CV_Value:
-│   │   │   │   │   └── V_Var: q0
-
-└── Def_Iso: cnotn
-│   └── IT_Iso:
-│   │   └── Ty_Prod:
-│   │   │   └── Ty_List:
-│   │   │   │   └── Ty_Var: B
-│   │   │   └── Ty_Var: B
-│   │   └── Ty_Prod:
-│   │   │   └── Ty_List:
-│   │   │   │   └── Ty_Var: B
-│   │   │   └── Ty_Var: B
-│   └── I_Mu: f
-│   │   └── I_Set:
-│   │   │   └── Iso_Rule:
-│   │   │   │   └── V_Pair:
-│   │   │   │   │   └── V_List_Empty
-│   │   │   │   │   └── V_Var: tb
-│   │   │   │   └── E_Assign:
-│   │   │   │   │   └── P_Var: tb'
-│   │   │   │   │   └── I_Name: not
-│   │   │   │   │   └── P_Var: tb
-│   │   │   │   │   └── E_Value:
+│   │   │   │   └── CV_Add:
+│   │   │   │   │   └── CV_Mult:
+│   │   │   │   │   │   └── Complex:
+│   │   │   │   │   │   │   └── 0.7071
+│   │   │   │   │   │   │   └── 0.0*i
 │   │   │   │   │   │   └── CV_Value:
-│   │   │   │   │   │   │   └── V_Pair:
-│   │   │   │   │   │   │   │   └── V_List_Empty
-│   │   │   │   │   │   │   │   └── V_Var: tb'
-│   │   │   └── Iso_Rule:
-│   │   │   │   └── V_Pair:
-│   │   │   │   │   └── V_List_Cons:
-│   │   │   │   │   │   └── V_Var: q0
-│   │   │   │   │   │   └── V_Var: cbs
-│   │   │   │   │   └── V_Var: tb
-│   │   │   │   └── E_Value:
-│   │   │   │   │   └── CV_Value:
-│   │   │   │   │   │   └── V_Pair:
-│   │   │   │   │   │   │   └── V_List_Cons:
-│   │   │   │   │   │   │   │   └── V_Var: q0
-│   │   │   │   │   │   │   │   └── V_Var: cbs
-│   │   │   │   │   │   │   └── V_Var: tb
-│   │   │   └── Iso_Rule:
-│   │   │   │   └── V_Pair:
-│   │   │   │   │   └── V_List_Cons:
-│   │   │   │   │   │   └── V_Var: q1
-│   │   │   │   │   │   └── V_Var: cbs
-│   │   │   │   │   └── V_Var: tb
-│   │   │   │   └── E_Assign:
-│   │   │   │   │   └── P_Pair:
-│   │   │   │   │   │   └── P_Var: cbs'
-│   │   │   │   │   │   └── P_Var: tb'
-│   │   │   │   │   └── I_Name: f
-│   │   │   │   │   └── P_Pair:
-│   │   │   │   │   │   └── P_Var: cbs
-│   │   │   │   │   │   └── P_Var: tb
-│   │   │   │   │   └── E_Value:
-│   │   │   │   │   │   └── CV_Value:
-│   │   │   │   │   │   │   └── V_Pair:
-│   │   │   │   │   │   │   │   └── V_List_Cons:
-│   │   │   │   │   │   │   │   │   └── V_Var: q1
-│   │   │   │   │   │   │   │   │   └── V_Var: cbs'
-│   │   │   │   │   │   │   │   └── V_Var: tb'
-
-└── Def_Iso: controlledn
-│   └── IT_Func:
-│   │   └── IT_Iso:
-│   │   │   └── Ty_Var: B
-│   │   │   └── Ty_Var: B
-│   │   └── IT_Iso:
-│   │   │   └── Ty_Prod:
-│   │   │   │   └── Ty_List:
-│   │   │   │   │   └── Ty_Var: B
-│   │   │   │   └── Ty_Var: B
-│   │   │   └── Ty_Prod:
-│   │   │   │   └── Ty_List:
-│   │   │   │   │   └── Ty_Var: B
-│   │   │   │   └── Ty_List:
-│   │   │   │   │   └── Ty_Var: B
-│   └── I_Mu: f
-│   │   └── I_Lam: op
-│   │   │   └── I_Set:
-│   │   │   │   └── Iso_Rule:
-│   │   │   │   │   └── V_Pair:
-│   │   │   │   │   │   └── V_List_Empty
-│   │   │   │   │   │   └── V_Var: tb
-│   │   │   │   │   └── E_Assign:
-│   │   │   │   │   │   └── P_Var: tb'
-│   │   │   │   │   │   └── I_Name: op
-│   │   │   │   │   │   └── P_Var: tb
-│   │   │   │   │   │   └── E_Value:
-│   │   │   │   │   │   │   └── CV_Value:
-│   │   │   │   │   │   │   │   └── V_Pair:
-│   │   │   │   │   │   │   │   │   └── V_List_Empty
-│   │   │   │   │   │   │   │   │   └── V_Var: tb'
-│   │   │   │   └── Iso_Rule:
-│   │   │   │   │   └── V_Pair:
-│   │   │   │   │   │   └── V_List_Cons:
 │   │   │   │   │   │   │   └── V_Var: q0
-│   │   │   │   │   │   │   └── V_List_Cons:
-│   │   │   │   │   │   │   │   └── V_Var: q0
-│   │   │   │   │   │   │   │   └── V_Var: cbs
-│   │   │   │   │   │   └── V_Var: tb
-│   │   │   │   │   └── E_Value:
+│   │   │   │   │   └── CV_Mult:
+│   │   │   │   │   │   └── Complex:
+│   │   │   │   │   │   │   └── 0.0
+│   │   │   │   │   │   │   └── -0.7071*i
 │   │   │   │   │   │   └── CV_Value:
-│   │   │   │   │   │   │   └── V_Pair:
-│   │   │   │   │   │   │   │   └── V_List_Cons:
-│   │   │   │   │   │   │   │   │   └── V_Var: q0
-│   │   │   │   │   │   │   │   │   └── V_Var: cbs
-│   │   │   │   │   │   │   │   └── V_Var: tb
-│   │   │   │   └── Iso_Rule:
-│   │   │   │   │   └── V_Pair:
-│   │   │   │   │   │   └── V_List_Cons:
 │   │   │   │   │   │   │   └── V_Var: q1
-│   │   │   │   │   │   │   └── V_Var: cbs
-│   │   │   │   │   │   └── V_Var: tb
-│   │   │   │   │   └── E_Assign:
-│   │   │   │   │   │   └── P_Pair:
-│   │   │   │   │   │   │   └── P_Var: cbs'
-│   │   │   │   │   │   │   └── P_Var: tb'
-│   │   │   │   │   │   └── I_Name: f
-│   │   │   │   │   │   └── P_Pair:
-│   │   │   │   │   │   │   └── P_Var: cbs
-│   │   │   │   │   │   │   └── P_Var: tb
-│   │   │   │   │   │   └── E_Value:
-│   │   │   │   │   │   │   └── CV_Value:
-│   │   │   │   │   │   │   │   └── V_Pair:
-│   │   │   │   │   │   │   │   │   └── V_List_Cons:
-│   │   │   │   │   │   │   │   │   │   └── V_Var: q1
-│   │   │   │   │   │   │   │   │   │   └── V_Var: cbs'
-│   │   │   │   │   │   │   │   │   └── V_Var: tb'
 

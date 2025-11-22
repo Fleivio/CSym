@@ -20,7 +20,7 @@ extra-doc-files:    CHANGELOG.md
 common warnings
     ghc-options: -Wall
 
-library parser
+library lang
     import : warnings
 
     build-depends:
@@ -31,7 +31,7 @@ library parser
     
     build-tool-depends: happy:happy, alex:alex
 
-    hs-source-dirs: parser
+    hs-source-dirs: lang
 
     exposed-modules:
         Parser
@@ -46,6 +46,6 @@ executable CSym
     import:           warnings
     main-is:          Main.hs
     build-depends:    base ^>=4.18.0.0
-                      , CSym:parser
+                      , CSym:lang
     hs-source-dirs:   app
     default-language: Haskell2010
