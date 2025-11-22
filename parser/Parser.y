@@ -1,5 +1,5 @@
 {
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric, PatternSynonyms #-}
 module Parser(parseTokens, pretty) where
 import Lexer
 import Text.PrettyPrint.GenericPretty
@@ -69,7 +69,7 @@ IsoType : Type '<->' Type {IT_Iso $1 $3}
         | IsoType '->' IsoType {IT_Func $1 $3}
         | '(' IsoType ')' {$2}
 
-Type : 'U' {Ty_One}
+Type : 'U' {Ty_U}
      | Type '+' Type {Ty_Sum $1 $3}
      | Type '*' Type {Ty_Prod $1 $3}
      | '[' Type ']' {Ty_List $2}
@@ -123,7 +123,7 @@ TermListItems : Term ',' TermListItems {$1 : $3}
 
 {
 data Type
-  = Ty_One
+  = Ty_U
   | Ty_Sum Type Type
   | Ty_Prod Type Type
   | Ty_List Type

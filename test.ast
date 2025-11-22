@@ -1,4 +1,4 @@
-Def_Type "B" (Ty_Prod Ty_One Ty_One)
+Def_Type "B" (Ty_Prod Ty_U Ty_U)
 Def_Term "q1" (Ty_Var "B") (T_Inl T_Unit)
 Def_Term "q0" (Ty_Var "B") (T_Inr T_Unit)
 Def_Iso "not"
