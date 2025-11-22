@@ -131,10 +131,10 @@ Term : 'unit' {T_Unit}
      | 'inr' Term {T_Inr $2}
      | '<' Term ',' Term '>' {T_Sum $2 $4}
      | Iso Term {T_App $1 $2}
-     | Term '+' Term {T_Add $1 $3}
-     | Scalar '*' Term {T_Mult $1 $3}
      | 'let' Product '=' Term 'in' Term {T_Ext $2 $4 $6}
+     | Term '+' Term {T_Add $1 $3}
      | Term '::' Term {T_List_Cons $1 $3}
+     | Scalar '*' Term {T_Mult $1 $3}
      | '(' Term ')' {$2}
 
 TermListItems : Term ',' TermListItems {$1 : $3}
@@ -155,12 +155,21 @@ Scalar : NUM {(fromIntegral $1) :+ 0}
 
 {
 
+parseError l@((tkn, AlexPn ab line col, lit):xs)
+  = error $ unlines [
+     "\n\nPARSING ERROR:" 
+    , "Unexpected: " ++ show tkn
+    , "At line: " ++ show line
+    , ""
+    , show $ restOfTheLine l line
+    , " ^"
+    , "On literal: " ++ show lit
+    ]
 
-
-parseError ((tkn, AlexPn ab line col, lit):xs) 
-  = error $ "\nParsing error:" 
-    ++ "\nAt line : " ++ show line
-    ++ "\nAt position: " ++ show col
-    ++ "\nUnexpected: " ++ show tkn
-    ++ "\nOn literal: " ++ show lit
+restOfTheLine xs lineNu = 
+  unwords
+  $ map snd 
+  $ takeWhile ((== lineNu) . fst)
+  $ (\(_,AlexPn _ l _,lit) -> (l, lit)) 
+ <$> xs
 }

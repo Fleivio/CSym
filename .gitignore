@@ -1,2 +1,4 @@
 dist-newstyle
 .vscode
+/lang/Parser.hs
+/lang/Lexer.hs

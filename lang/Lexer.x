@@ -63,7 +63,7 @@ tokens :-
   ";"                    { tokenMk TK_DELIM }
   "\n"                   ;
 
-  .                      { \i c -> error $ "Token error: " ++ show c ++ "\nAt Position:" ++ show i }
+  .                      { \i c -> error $ "TOKEN ERROR: " ++ show c ++ "\nAt Position:" ++ show i }
 
 {
 data TokenId

@@ -12,6 +12,7 @@ module Ast(
   , Term(..)
   , Def(..)
   , Defs
+  , typeDim
 ) where
 
 import Data.Complex
@@ -26,6 +27,13 @@ data Type
   | Ty_List Type
   | Ty_Var String
   deriving(Eq, Show)
+
+typeDim :: Type -> Int
+typeDim Ty_U = 1
+typeDim (Ty_Sum a b) = typeDim a + typeDim b
+typeDim (Ty_Prod a b) = typeDim a * typeDim b
+typeDim (Ty_List a) = undefined
+typeDim (Ty_Var _) = error "this should never happen"
 
 data IsoType
   = IT_Iso Type Type

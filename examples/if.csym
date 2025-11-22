@@ -1,0 +1,7 @@
+
+-- Polymorphic
+def if : (a <-> b) -> (a <-> b) -> (B * a <-> B * b)
+   = \f => \g => 
+   | <q1, a> <=> let y = f a in <q1, y>
+   | <q0, b> <=> let y = g a in <q0, y>
+   ;
